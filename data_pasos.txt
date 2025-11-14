@@ -41,3 +41,16 @@ python manage.py createsuperuser
 
 pipenv install pylint-django
 
+
+# settings 
+LANGUAGE_CODE = 'es'
+
+TIME_ZONE = 'America/Santiago'
+
+
+# Templates 
+
+{% block content %}
+{% endblock%}
+
+# {% extends 'base.html' %}
