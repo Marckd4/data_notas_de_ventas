@@ -1,0 +1,48 @@
+<h1>Logistica</h1>
+
+
+<div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+  <table class="table table-bordered table-striped table-hover text-center align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th>Fecha de Solicitud</th>
+        <th>Cod DUM</th>
+        <th>Cod EAN</th>
+        <th>Cod Sistema</th>
+        <th>Descripción</th>
+        <th>Área de Solicitud</th>
+        <th>Nombre del Solicitante</th>
+        <th>Cantidad Solicitada</th>
+        <th>Status de Prioridades</th>
+        <th>Cant Enviada BSF</th>
+        <th>Chofer</th>
+        <th>Factura / Guía</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for p in pedidos %}  
+      <!-- conecta a data  -->
+      <tr>
+        <td>{{ p.fecha_solicitud }}</td>
+        <td>{{ p.cod_dum }}</td>
+        <td>{{ p.cod_ean }}</td>
+        <td>{{ p.cod_sistema }}</td>
+        <td>{{ p.descripcion }}</td>
+        <td>{{ p.area_solicitud }}</td>
+        <td>{{ p.nombre_solicitante }}</td>
+        <td>{{ p.cantidad_solicitada }}</td>
+        <td>{{ p.status_prioridades }}</td>
+        <td>{{ p.cant_enviada_bsf }}</td>
+        <td>{{ p.chofer }}</td>
+        <td>{{ p.factura_guia }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="12">No hay pedidos registrados.</td>
+      </tr>
+      {% endfor %}
+      <!-- cierra la conecion -->
+    </tbody>
+  </table>
+</div>
