@@ -8,5 +8,8 @@ app_name = 'pedidos'
 urlpatterns = [
     path('', views.index, name='index'),
     path('formulario/', views.formulario, name='formulario'),
-
+    path('editar/<int:id>/', views.editar_pedido, name='editar'),
+    path('eliminar/<int:id>/', views.eliminar_pedido, name='eliminar'),
 ]
+
+

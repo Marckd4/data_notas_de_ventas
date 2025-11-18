@@ -4,22 +4,40 @@
 
 <h1 class="mb-4">Solicitud de Mercadería</h1>
 
-<div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
-    <table class="table table-bordered table-striped table-hover text-center align-middle">
-        <thead class="table-dark">
+<style>
+    /* Cabecera fija */
+    .sticky-header thead th {
+        position: sticky;
+        top: 0;
+        z-index: 3;
+        background-color: #0d6efd !important;
+        color: white;
+    }
+    .tabla-scroll {
+        max-height: 500px;
+        overflow-y: auto;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+    }
+</style>
+
+<div class="table-responsive tabla-scroll">
+    <table class="table table-bordered table-striped table-hover text-center align-middle sticky-header">
+        <thead class="table-primary">
             <tr>
-                <th>Fecha de Solicitud</th>
+                <th>Fecha</th>
                 <th>Cod_DUN</th>
                 <th>Cod_EAN</th>
                 <th>Cod_Sistema</th>
                 <th>Descripción</th>
-                <th>Área de Solicitud</th>
-                <th>Nombre del Solicitante</th>
-                <th>Cantidad Solicitada</th>
-                <th>Status de Prioridades</th>
-                <th>Cant Enviada BSF</th>
+                <th>Área</th>
+                <th>Solicitante</th>
+                <th>Cant. Solicitada</th>
+                <th>Status</th>
+                <th>Cant. Enviada</th>
                 <th>Chofer</th>
                 <th>Factura / Guía</th>
+                <th>Acciones</th>
             </tr>
         </thead>
 
@@ -38,10 +56,25 @@
                 <td>{{ p.cant_enviada_bsf }}</td>
                 <td>{{ p.chofer }}</td>
                 <td>{{ p.factura_guia }}</td>
+
+                <!-- BOTONES EDITAR Y ELIMINAR -->
+                <td>
+                    <a href="{% url 'pedidos:editar' p.id %}" class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+
+                    <form action="{% url 'pedidos:eliminar' p.id %}" method="post" style="display:inline-block;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('¿Seguro que deseas eliminar este registro?')">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="12">No hay pedidos registrados.</td>
+                <td colspan="13">No hay pedidos registrados.</td>
             </tr>
             {% endfor %}
         </tbody>
