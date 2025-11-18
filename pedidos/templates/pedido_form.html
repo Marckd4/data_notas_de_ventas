@@ -22,9 +22,14 @@
                     </div>
                 {% endfor %}
 
-                <button type="submit" class="btn btn-success w-100">
-                    Enviar
+                 <button type="submit" class="btn btn-success w-100 mb-2">
+                    ✔ Enviar Pedido
                 </button>
+
+                <a href="{% url 'inicio' %}" class="btn btn-secondary w-100">
+                    ← Volver al inicio
+                </a>
+
             </form>
         </div>
     </div>

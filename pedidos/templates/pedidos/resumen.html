@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2 class="mb-4">Resumen de Traslado / Despacho</h2>
+
+<style>
+    .resumen-table {
+        background: white;
+        border: 1px solid #ccc;
+    }
+
+    .resumen-table thead th {
+        background-color: #0d6efd !important;
+        color: white;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .resumen-table td {
+        text-align: center;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+</style>
+
+<div class="table-responsive">
+    <table class="table table-bordered resumen-table">
+        <thead>
+            <tr>
+                <th>Cod_DUN</th>
+                <th>Cod_Sistema</th>
+                <th>Descripción</th>
+                <th>Cant. Enviada</th>
+                <th>Chofer</th>
+                <th>Factura / Guía</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for p in pedidos %}
+            <tr>
+                <td>{{ p.cod_dun }}</td>
+                <td>{{ p.cod_sistema }}</td>
+                <td>{{ p.descripcion }}</td>
+                <td>{{ p.cant_enviada_bsf }}</td>
+                <td>{{ p.chofer }}</td>
+                <td>{{ p.factura_guia }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<a href="{% url 'inicio' %}" class="btn btn-secondary mt-3">
+    ← Volver
+</a>
+
+<a href="{% url 'pedidos:exportar_excel' %}" class="btn btn-success mt-3">
+    📥 Exportar a Excel
+</a>
+
+
+{% endblock %}

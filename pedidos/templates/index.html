@@ -4,25 +4,49 @@
 
 <h1 class="mb-4">Solicitud de Mercadería</h1>
 
+<!-- BUSCADOR -->
+<div class="mb-3">
+    <input id="filtroTabla" type="text" class="form-control form-control-lg"
+           placeholder="🔍 Buscar en la tabla... (Descripción, Código, Área, Solicitante, etc.)">
+</div>
+
 <style>
-    /* Cabecera fija */
-    .sticky-header thead th {
-        position: sticky;
-        top: 0;
-        z-index: 3;
-        background-color: #0d6efd !important;
-        color: white;
-    }
+    /* Contenedor con scroll vertical y horizontal */
     .tabla-scroll {
-        max-height: 500px;
+        max-height: 600px;       /* Aprox. 15 filas visibles */
         overflow-y: auto;
+        overflow-x: auto;
         border: 2px solid #ddd;
         border-radius: 6px;
+        padding: 0;
+        background: white;
+    }
+
+    /* Cabecera fija */
+    .tabla-scroll thead th {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        background-color: #0d6efd !important;
+        color: white;
+        white-space: nowrap;   /* Evita que la cabecera salte de línea */
+    }
+
+    /* Ajuste de columnas extensas */
+    table td, table th {
+        white-space: nowrap;   /* Permite scroll horizontal */
+    }
+
+    /* Animación suave al filtrar */
+    tr {
+        transition: all 0.2s ease-in-out;
     }
 </style>
 
-<div class="table-responsive tabla-scroll">
-    <table class="table table-bordered table-striped table-hover text-center align-middle sticky-header">
+<!-- CONTENEDOR SCROLLABLE -->
+<div class="tabla-scroll mb-3">
+
+    <table class="table table-bordered table-striped table-hover text-center align-middle">
         <thead class="table-primary">
             <tr>
                 <th>Fecha</th>
@@ -41,7 +65,7 @@
             </tr>
         </thead>
 
-        <tbody>
+        <tbody id="tablaPedidos">
             {% for p in pedidos %}
             <tr>
                 <td>{{ p.fecha_solicitud }}</td>
@@ -57,11 +81,8 @@
                 <td>{{ p.chofer }}</td>
                 <td>{{ p.factura_guia }}</td>
 
-                <!-- BOTONES EDITAR Y ELIMINAR -->
-                <td>
-                    <a href="{% url 'pedidos:editar' p.id %}" class="btn btn-warning btn-sm">
-                        Editar
-                    </a>
+                <td style="min-width: 150px;">
+                    <a href="{% url 'pedidos:editar' p.id %}" class="btn btn-warning btn-sm">Editar</a>
 
                     <form action="{% url 'pedidos:eliminar' p.id %}" method="post" style="display:inline-block;">
                         {% csrf_token %}
@@ -78,7 +99,26 @@
             </tr>
             {% endfor %}
         </tbody>
+
     </table>
+
 </div>
+
+<a href="{% url 'inicio' %}" class="btn btn-secondary">
+    ← Volver al inicio
+</a>
+
+<!-- JS — FILTRO EN TIEMPO REAL -->
+<script>
+    document.getElementById('filtroTabla').addEventListener('keyup', function () {
+        const filtro = this.value.toLowerCase();
+        const filas = document.querySelectorAll('#tablaPedidos tr');
+
+        filas.forEach(fila => {
+            const texto = fila.innerText.toLowerCase();
+            fila.style.display = texto.includes(filtro) ? '' : 'none';
+        });
+    });
+</script>
 
 {% endblock %}

@@ -10,6 +10,10 @@ urlpatterns = [
     path('formulario/', views.formulario, name='formulario'),
     path('editar/<int:id>/', views.editar_pedido, name='editar'),
     path('eliminar/<int:id>/', views.eliminar_pedido, name='eliminar'),
+    path('resumen/', views.resumen_traslado, name='resumen'),
+    path('exportar-excel/', views.exportar_excel, name='exportar_excel'),
+
+
 ]
 
 

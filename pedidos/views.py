@@ -57,3 +57,62 @@ def eliminar_pedido(request, id):
         return redirect('pedidos:index')  # ← ESTO ARREGLA EL ERROR
 
     return render(request, 'pedidos/eliminar.html', {'pedido': pedido})
+
+
+
+# resumen 
+
+def resumen_traslado(request):
+    pedidos = Pedido.objects.all().values(
+        'cod_dun',
+        'cod_sistema',
+        'descripcion',
+        'cant_enviada_bsf',
+        'chofer',
+        'factura_guia'
+    )
+
+    return render(request, 'pedidos/resumen.html', {'pedidos': pedidos})
+
+#exportar excel
+
+from openpyxl import Workbook
+from django.http import HttpResponse
+
+def exportar_excel(request):
+    # Crear archivo Excel
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Resumen Traslado"
+
+    # Encabezados
+    ws.append([
+        "Cod_DUN",
+        "Cod_Sistema",
+        "Descripción",
+        "Cant. Enviada",
+        "Chofer",
+        "Factura / Guía"
+    ])
+
+    # Datos desde DB
+    pedidos = Pedido.objects.all()
+
+    for p in pedidos:
+        ws.append([
+            p.cod_dun,
+            p.cod_sistema,
+            p.descripcion,
+            p.cant_enviada_bsf,
+            p.chofer,
+            p.factura_guia
+        ])
+
+    # Respuesta HTTP para descargar
+    response = HttpResponse(
+        content_type='application/ms-excel'
+    )
+    response['Content-Disposition'] = 'attachment; filename="resumen_traslado.xlsx"'
+
+    wb.save(response)
+    return response
