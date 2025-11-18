@@ -21,3 +21,5 @@ class Pedido(models.Model):
 
     def __str__(self):
         return f"{self.descripcion} - {self.cod_sistema}"
+
+

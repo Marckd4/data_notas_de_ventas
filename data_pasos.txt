@@ -54,3 +54,59 @@ TIME_ZONE = 'America/Santiago'
 {% endblock%}
 
 # {% extends 'base.html' %}
+
+
+
+
+
+
+
+
+
+
+
+carga masiva 
+
+pip install openpyxl
+
+
+/tu_proyecto/scripts/
+
+import openpyxl
+from productos.models import Producto  # Cambia a tu modelo
+
+def cargar_excel():
+    archivo = 'productos.xlsx'  # Debe estar en la raíz del proyecto
+
+    wb = openpyxl.load_workbook(archivo)
+    hoja = wb.active
+
+    productos = []
+
+    # Saltar encabezado (row=2)
+    for fila in hoja.iter_rows(min_row=2, values_only=True):
+        cod_ean, cod_dun, cod_sistema, descripcion = fila
+
+        productos.append(
+            Producto(
+                cod_ean=cod_ean,
+                cod_dun=cod_dun,
+                cod_sistema=cod_sistema,
+                descripcion=descripcion
+            )
+        )
+
+    # Inserción masiva
+    Producto.objects.bulk_create(productos)
+
+    print("✔ Carga masiva desde Excel finalizada.")
+
+
+    python manage.py shell
+
+
+    from scripts.carga_excel import cargar_excel
+cargar_excel()
+
+
+
